@@ -1,0 +1,20 @@
+
+cd "$(dirname "$0")"
+rm -f /lib/systemd/system/mongod.service
+groupdel -f mongod >/dev/null 2>&1
+userdel -f -r mongod >/dev/null 2>&1
+sleep 1
+getent group mongod >/dev/null || groupadd -r mongod
+getent passwd mongod >/dev/null || useradd -M -N -r -g mongod \
+  -d /var/lib/mongo -s /usr/sbin/nologin -c mongod mongod
+
+install -v -c -m 0644 mongod.service /lib/systemd/system/
+install -m 0755 -o mongod -g mongod -d /var/lib/mongo
+chown -R mongod:mongod /var/lib/mongo
+install -m 0755 -o mongod -g mongod -d /var/log/mongodb
+[ -f /var/log/mongodb/mongod.log ] || \
+install -m 0640 -o mongod -g mongod /dev/null /var/log/mongodb/mongod.log
+chown -R mongod:mongod /var/log/mongodb
+[ -f /etc/mongod.conf ] || install -v -c -m 0644 mongod.conf.default /etc/mongod.conf
+systemctl daemon-reload >/dev/null 2>&1 || : 
+

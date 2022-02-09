@@ -1,0 +1,56 @@
+# mongod.conf
+
+# for documentation of all options, see:
+#   https://docs.mongodb.org/manual/reference/configuration-options/
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+
+# Where and how to store data.
+storage:
+  dbPath: /var/lib/mongo
+  journal:
+    enabled: true
+#  engine:
+#  wiredTiger:
+
+# how the process runs
+processManagement:
+  fork: true  # fork and run in background
+  pidFilePath: /var/run/mongodb/mongod.pid  # location of pidfile
+  timeZoneInfo: /usr/share/zoneinfo
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1  # Enter 0.0.0.0,:: to bind to all IPv4 and IPv6 addresses or, alternatively, use the net.bindIpAll setting.
+
+# (umask 0277 ; openssl rand -base64 -out /etc/mongodb/keyfile 752)
+# chown mongod:mongod /etc/mongodb/keyfile
+#security:
+#  keyFile: /etc/mongodb/keyfile
+#  clusterAuthMode: keyFile
+#  authorization: enabled
+
+setParameter:
+  authenticationMechanisms: SCRAM-SHA-256
+#  enableLocalhostAuthBypass: false
+
+#operationProfiling:
+
+#replication:
+#  oplogSizeMB: 10000
+#  replSetName: mongors1
+
+#sharding:
+  #clusterRole: configsvr
+  #clusterRole: shardsvr
+
+## Enterprise-Only Options
+
+#auditLog:
+
+#snmp:
