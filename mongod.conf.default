@@ -36,7 +36,9 @@ net:
 #  authorization: enabled
 
 setParameter:
-  authenticationMechanisms: SCRAM-SHA-256
+  authenticationMechanisms: SCRAM-SHA-256,SCRAM-SHA-1
+  scramIterationCount: 15000
+  scramSHA256IterationCount: 20000
 #  enableLocalhostAuthBypass: false
 
 #operationProfiling:
